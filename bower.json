@@ -1,0 +1,28 @@
+{
+  "name": "Memory game",
+  "version": "1.0.0",
+  "authors": [
+    "Alain Cajuste"
+  ],
+  "description": "Memory game",
+  "moduleType": [
+    "node"
+  ],
+  "license": "All right reserved to ac-codeprod.fr",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "libraries"
+  ],
+  "dependencies": {
+    "respond": "~1.4.2",
+    "jquery": "~1.11.1",
+    "twitter-bootstrap-3.3.0": "https://github.com/twbs/bootstrap/archive/v3.3.0.zip",
+    "font-awesome-4.2.0": "https://github.com/FortAwesome/Font-Awesome/archive/master.zip",
+    "css3-mediaqueries-js": "*",
+    "html5shiv": "~3.7.2",
+    "more-or-less": "~1.5.1",
+    "underscore": "~1.7.0"
+  }
+}
