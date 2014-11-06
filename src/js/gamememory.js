@@ -13,26 +13,26 @@
         var element = element;
         var tiling;
         var currentTile = [];
+        var currentIndex;
         var nbClick = 0;
         var nbTileLook = 0;
 
         plugin.construct = function() {
             plugin.settings = $.extend({}, defaults, options);
             $element.append('<h1 class="title-game text-center">Jeu du memory</h1>');
-            $element.append('<section id="zone" class="row"><div id="tiling" class="col-md-10 col-md-offset-1 tiling"></div></section>');
-            var $zone = $element.find('#tiling');
+            $element.append('<section class="row"><div id="tiling" class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1 tiling"></div></section>');
+            var $tiling = $element.find('#tiling');
             if (plugin.settings.contents.length == 0) {
-                $zone.append('<p class="text-center">Pas de carte</p>');
+                $tiling.append('<p class="text-center">Pas de carte</p>');
             } else {
                 tiling = _.sample(plugin.settings.contents, plugin.settings.quantity / 2);
-                console.log(tiling);
                 tiling = _.shuffle($.merge(tiling, tiling));
                 for (var i = 0; i <= tiling.length - 1; i++) {
-                    $zone.append('<div class="tile col-md-2"><div class="front"><i class="fa fa-eye"></i></div>' +
-                        tiling[i]["content"] + '</div>');
+                    $tiling.append('<li class="tile col-xs-5 col-sm-2 col-md-4 col-lg-2"><div class="front"><i class="fa fa-eye"></i></div>' +
+                        tiling[i]["content"] + '</li>');
                 };
             }
-            $element.append('<p>Nombre de clics : <span  id="number-click" class="number-click">0</span></p>');
+            $element.append('<p class="info-game">Nombre de clics : <span  id="number-click" class="number-click">0</span></p>');
             plugin.init();
         };
         plugin.init = function() {
@@ -43,28 +43,32 @@
         };
         var setClickTile = function() {
             $element.find('.tile').on('click', function(e) {
-                if (nbTileLook != 2) {
-                    nbClick++;
-                    nbTileLook++;
-                    $element.find('#number-click').text(nbClick);
-                    $(this).toggleClass("tile-look");
-                    onTimeOutHideTile($(this));
-                    onCheckTile($(this).find('.back').attr("data-tile"));
+                var index = $(this).index();
+                if (currentIndex != index) {
+                    currentIndex = index;
+                    if (nbTileLook != 2) {
+                        nbClick++;
+                        nbTileLook++;
+                        $element.find('#number-click').text(nbClick);
+                        $(this).toggleClass("tile-look");
+                        _.delay(onTimeOutHideTile($(this)),plugin.settings.interval);
+                        onMatchedTile($(this).find('.back').attr("data-tile"));
+                    }
                 }
             });
 
         }
         var onTimeOutHideTile = function(e) {
-            setTimeout(function() {
-                // _.without(currentTile, e.find('.back').attr("data-tile"));
-                currentTile = $.grep(currentTile, function(value) {
-                    return value != e.find('.back').attr("data-tile");
-                });
-                e.toggleClass("tile-look");
-                nbTileLook--;
-            }, plugin.settings.interval);
+            return {
+                apply: function() {
+                    currentTile = _.without(currentTile, e.find('.back').attr("data-tile"));
+                    e.toggleClass("tile-look");
+                    currentIndex = -1;
+                    nbTileLook--;
+                }
+            }
         }
-        var onCheckTile = function(value) {
+        var onMatchedTile = function(value) {
             currentTile.push(value);
             if (nbTileLook == 2) {
                 if (currentTile[0] == currentTile[1]) {

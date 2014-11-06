@@ -1,5 +1,8 @@
 body {
-    background: url(../assets/img/memory.jpg);
+    background-image: url(../assets/img/memory.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
     font-family: "Mickey";
     font-size: 100%;
 }
@@ -10,49 +13,45 @@ body {
     font-size: 10em;
     color: #FFF;
 }
+.info-game {
+    font-size: 4em;
+}
 .tiling {
     border: 2px solid #000;
-    height: 150px;
     padding: 0;
     overflow: hidden;
 }
 .tile {
-    height: inherit;
+    display: inline-block;
+    height: 150px;
     border-right: 2px solid #000;
     line-height: 150px;
     padding: 0;
     perspective: 600px;
-
+    cursor: pointer;
+    text-decoration: none;
+    list-style: none;
     &:last-child {
         border: none;
     }
     & .back, & .front {
-        position: relative;
-        height: 120px;
-    }
-    & .front {
-        width:100%;
+        width: 100%;
         height: inherit;
         position: absolute;
-        background: rgba(0, 0, 0, 0.3);
         top: 0;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transition: all .4s ease-in-out;
+    }
+    & .front {
+        background: rgba(0, 0, 0, 0.3);
         z-index: 900;
         text-align: center;
         transform: rotateX(0deg) rotateY(0deg);
-        transform-style: preserve-3d;
-        backface-visibility: hidden;
-        transition: all .4s ease-in-out;
     }
     & .back {
-        width:100%;
-        height: inherit;
-        position: absolute;
-        top: 0;
         z-index: 1000;
         transform: rotateY(-180deg);
-        transform-style: preserve-3d;
-        backface-visibility: hidden;
-        transition: all .4s ease-in-out;
     }
     &-look, &-valid {
         & .front {

@@ -14,6 +14,7 @@
         "content": '<img data-tile="memory06" class="back" src="assets/img/memory06.png">'
     });
     $("#game-memory").gameMemory({
-        contents: tiling
+        contents: tiling,
+        quantity:8
     });
 })(jQuery);
