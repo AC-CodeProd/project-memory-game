@@ -15,6 +15,6 @@
     });
     $("#game-memory").gameMemory({
         contents: tiling,
-        quantity:8
+        quantity:12
     });
 })(jQuery);

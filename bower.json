@@ -23,6 +23,7 @@
     "css3-mediaqueries-js": "*",
     "html5shiv": "~3.7.2",
     "more-or-less": "~1.5.1",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "toastr": "~2.1.0"
   }
 }

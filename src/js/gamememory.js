@@ -14,6 +14,7 @@
         var tiling;
         var currentTile = [];
         var currentIndex;
+        var timerId = [];
         var nbClick = 0;
         var nbTileLook = 0;
 
@@ -44,6 +45,13 @@
         var setClickTile = function() {
             $element.find('.tile').on('click', function(e) {
                 var index = $(this).index();
+                if (_.isEmpty(currentTile)) {
+                    currentTile.push({
+                        id: $(this).find('.back').attr("data-tile"),
+                        index: index
+                    });
+                }
+
                 if (currentIndex != index) {
                     currentIndex = index;
                     if (nbTileLook != 2) {
@@ -51,29 +59,48 @@
                         nbTileLook++;
                         $element.find('#number-click').text(nbClick);
                         $(this).toggleClass("tile-look");
-                        _.delay(onTimeOutHideTile($(this)),plugin.settings.interval);
-                        onMatchedTile($(this).find('.back').attr("data-tile"));
+                        timerId.push(_.delay(onTimeOutHideTile($(this)), plugin.settings.interval));
+                        if (nbTileLook == 2 && currentTile[0].index != index) {
+                            currentTile.push({
+                                id: $(this).find('.back').attr("data-tile"),
+                                index: index
+                            });
+                            onMatchedTile();
+                        }
                     }
                 }
             });
-
         }
         var onTimeOutHideTile = function(e) {
             return {
                 apply: function() {
-                    currentTile = _.without(currentTile, e.find('.back').attr("data-tile"));
                     e.toggleClass("tile-look");
                     currentIndex = -1;
                     nbTileLook--;
                 }
             }
         }
-        var onMatchedTile = function(value) {
-            currentTile.push(value);
-            if (nbTileLook == 2) {
-                if (currentTile[0] == currentTile[1]) {
-                    $element.find('.back[data-tile="' + currentTile[0] + '"]').parent().addClass('tile-valid');
-                }
+        var onMatchedTile = function() {
+            currentIndex = -1;
+            if (currentTile[0].id == currentTile[1].id) {
+                toastr.success('Win !');
+                $element.find('.back[data-tile="' + currentTile[0].id + '"]').parent().addClass('tile-valid');
+                currentTile = [];
+            } else {
+                toastr.error('Loser !');
+                currentTile = [];
+                for (var i = 0; i < timerId.length; i++) {
+                    clearTimeout(timerId[i]);
+                };
+                _.delay(function() {
+                    $element.find(".tile").each(function() {
+                        if ($(this).hasClass("tile-look")) {
+                            $(this).removeClass("tile-look");
+                            nbTileLook--;
+                        }
+                    });
+                }, 1000);
+
             }
         }
 
