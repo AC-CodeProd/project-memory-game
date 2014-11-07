@@ -13,7 +13,7 @@
     }, {
         "content": '<img data-tile="memory06" class="back" src="assets/img/memory06.png">'
     });
-    $("#game-memory").gameMemory({
+    $("#memory-game").memoryGame({
         contents: tiling,
         quantity:12
     });

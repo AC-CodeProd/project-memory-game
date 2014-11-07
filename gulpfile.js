@@ -5,7 +5,7 @@ var plugins = require("gulp-load-plugins")({
 });
 
 var jsFilter = plugins.filter('**/*.js');
-var lessFilter = plugins.filter('**/*.less');
+var cssFilter = plugins.filter('**/*.css');
 var pathsSrc = {
     index: 'src/index.html',
     less: ['src/less/*.less', '!src/less/_global.less', '!src/less/_mixins.less', '!src/less/components/**/*.less', '!src/less/modules/*.less', '!src/less/utilities/*.less'],
@@ -21,11 +21,7 @@ var pathsBuild = {
     scripts: ['build/js/*.js'],
     images: 'build/assets/img/**/*'
 };
-// gulp.task('clean', function() {
-//     return gulp.src('', {
-//         read: false
-//     }).pipe(clean());
-// });
+
 gulp.task('font-awesome', function() {
     return gulp.src(pathsSrc.fontAwesome)
         .pipe(gulp.dest('build/assets/fonts/font-awesome'));
@@ -41,26 +37,22 @@ gulp.task('index', function() {
     return gulp.src(pathsSrc.index)
         .pipe(plugins.plumber())
         .pipe(assets)
-        .pipe(plugins.sourcemaps.init())
         /*.pipe(jsFilter)
     .pipe(plugins.uglify())
     .pipe(plugins.jsmin())
     .pipe(plugins.sourcemaps.write('build/js'))
     .pipe(jsFilter.restore())*/
-        .pipe(plugins.sourcemaps.write('/'))
         .pipe(assets.restore())
         .pipe(plugins.useref())
         .pipe(gulp.dest('build'));
 });
 gulp.task('less', function() {
     return gulp.src(pathsSrc.less)
-        .pipe(plugins.sourcemaps.init())
         .pipe(plugins.plumber())
         .pipe(plugins.less())
         .pipe(plugins.autoprefixer("last 8 version", "> 1%", "ie 8", "ie 7"), {
             cascade: true
         })
-        .pipe(plugins.sourcemaps.write('/'))
         .pipe(gulp.dest('build/css'));
 });
 gulp.task('scripts', function() {
@@ -69,7 +61,6 @@ gulp.task('scripts', function() {
         .pipe(plugins.uglify({
             mangle: false
         }))
-        // .pipe(plugins.sourcemaps.write())
         .pipe(plugins.jsmin())
         .pipe(gulp.dest('build/js'));
 });
@@ -93,4 +84,4 @@ gulp.task('watch', function() {
         server.changed(event.path);
     });
 });
-gulp.task('default', ['watch', 'index', 'images', 'font-awesome', 'fonts', 'less']);
+gulp.task('default', ['watch','index', 'less', 'images', 'font-awesome', 'fonts', 'scripts']);

@@ -1,6 +1,6 @@
 "use strict";
 (function($, App) {
-    $.gameMemory = function(element, options) {
+    $.memoryGame = function(element, options) {
         var defaults = {
             contents: [],
             interval: "2000",
@@ -11,6 +11,7 @@
         plugin.settings = {};
         var $element = $(element);
         var element = element;
+
         var tiling;
         var currentTile = [];
         var currentIndex;
@@ -29,7 +30,7 @@
                 tiling = _.sample(plugin.settings.contents, plugin.settings.quantity / 2);
                 tiling = _.shuffle($.merge(tiling, tiling));
                 for (var i = 0; i <= tiling.length - 1; i++) {
-                    $tiling.append('<li class="tile col-lg-2"><div class="front"><i class="fa fa-eye"></i></div>' +
+                    $tiling.append('<li class="tile col-xs-6 col-sm-4 col-md-3 col-lg-2"><div class="front"><i class="fa fa-eye"></i></div>' +
                         tiling[i]["content"] + '</li>');
                 };
             }
@@ -110,15 +111,15 @@
 
         plugin.construct();
     }
-    $.fn.gameMemory = function(options, customParams) {
+    $.fn.memoryGame = function(options, customParams) {
         return $(this).each(function() {
-            if (undefined == $(this).data('gameMemory')) {
+            if (undefined == $(this).data('memoryGame')) {
                 if (typeof options == "undefined") options = {};
-                var plugin = new $.gameMemory(this, options);
-                $(this).data('gameMemory', plugin);
+                var plugin = new $.memoryGame(this, options);
+                $(this).data('memoryGame', plugin);
             }
             if (typeof options === 'string') {
-                $(this).data('gameMemory')[options].call($(this), $(this), customParams);
+                $(this).data('memoryGame')[options].call($(this), $(this), customParams);
             }
         });
     }

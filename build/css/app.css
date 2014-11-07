@@ -13,7 +13,7 @@ body {
 }
 .title-game {
   font-size: 10em;
-  color: #FFF;
+  color: #000;
 }
 .info-game {
   font-size: 4em;
@@ -23,29 +23,41 @@ body {
   display: block;
   margin: 10px auto;
   border: 4px solid #000;
+  font-size: 1.5em;
   background: transparent;
   padding: 10px 20px 10px 20px;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transition: all 0.3s;
+          transition: all 0.3s;
 }
 .button-replay span {
-  position: relative;
-  left: 0;
-  -webkit-transition: all 0.2s;
-          transition: all 0.2s;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 0.3s;
+          transition: all 0.3s;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
 }
 .button-replay:hover span {
-  left: -10px;
+  -webkit-transform: translateX(200%);
+      -ms-transform: translateX(200%);
+          transform: translateX(200%);
 }
 .button-replay i {
   position: absolute;
-  left: 75%;
-  top: 30%;
-  opacity: 0;
-  -webkit-transition: all 0.2s;
-          transition: all 0.2s;
+  height: 100%;
+  width: 100%;
+  left: -100%;
+  top: 0;
+  line-height: 60px;
+  -webkit-transition: all 0.3s;
+          transition: all 0.3s;
 }
 .button-replay:hover i {
-  left: 80%;
-  opacity: 1;
+  left: 0;
 }
 .tiling {
   border: 2px solid #000;
@@ -101,5 +113,3 @@ body {
   -webkit-transform: rotateX(0deg) rotateY(0deg);
           transform: rotateX(0deg) rotateY(0deg);
 }
-
-/*# sourceMappingURL=/app.css.map */
